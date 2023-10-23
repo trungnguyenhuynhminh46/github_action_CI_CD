@@ -1,0 +1,91 @@
+- Cách tạo ssh key: https://vietnix.vn/tao-ssh-key/
++ cd .ssh
++ ssh-keygen -t rsa -b 4096 -C "trungnguyenhuynhminh46@gmail.com"
++ Nhập tên
++ Để trống passphrase
++ Nó sẽ gen ra 2 file
+-> File không có đuôi là private
+-> File có đuôi pub là public
+
+
+- Copy nội dung file pub vào ssh key lúc tạo VPS
+
+
+- Cách tạo một EC2 instance
++ Nhấn vào launch instance và tạo bình thường (Nhớ tạo và lưu ssh key)
+
+
+- Cách 1: SSH vào một EC2 instance:
++ Tải putty (window)
++ Copy IpV4 address
++ Mở putty 
++ ubuntu@54.254.169.17
++ Save 1 session cho lần sau (Nhấn vào session > load để load lại dữ liệu)
++ Connection > SSH > Auth > Credential > Chọn key ppk
+
+
+- Cách 2: connect trực tiếp trên giao diện AWS:
++ Chọn instance
++ Nhấn connect
+
+- Cách 3: từ CLI:
++ đứng trong thư mục chứa secret key
++ ssh -i name_of_key root@54.254.169.17
+
+
+==============
+- google: install nodejs on ubuntu
+https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-20-04
+-> Dùng nvm cài đặt bản tương ứng với local
+
+
+- install nginx ...
+https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-20-04 
+
+- Tạo user, add user vào quyền admin (Vì root không truy cập được vào usr/share/nginx/html)
+sudo usermod -aG sudo username
+
+- Nội dung trpng /var/www/html hoặc /usr/share/nginx/html là nội dung được public ra port 80
+
+- Github: Setting -> Actions -> Runner: Thay đổi runner thành Instance của AWS:
++ Nhấn new self-hosted runner -> Chọn hệ điều hành
++ Làm theo hướng dẫn
+sudo chmod -R 777 /usr/share/nginx/github_action_ci_cd
+-> Để có thể chạy lệnh cài đặt github action -_-
+-> chạy xong dòng ./config là tạo được runer
++ sudo ./svc.sh install
++ sudo ./svc.sh start
+
+- Cấu hình folder root, server_name và proxy
++ cd /etc/nginx/sites-available  ## Nơi chứa cấu hình domain name, port, etc...
++ sudo nano default ## Mở file default
++ Thay đổi các dòng sau:
+root /var/www/github_action_ci_cd/_work/github_action_CI_CD/github_action_CI_CD;
+
+server_name 54.179.167.13;
+
+# proxy_pass http://localhost:8080;
+# proxy_http_version 1.1;
+# proxy_set_header Upgrade $http_upgrade;
+# proxy_set_header Connection 'upgrade';
+# proxy_set_header Host $host;
+# proxy_cache_bypass $http_upgrade;
+
+- sudo service nginx restart
+
+- sudo visudo -f /etc/sudoers.d/ubuntu (ubuntu là tên user)
+content:
+ALL=(ALL) NOPASSWD: /usr/sbin/service nginx start,/usr/sbin/service nginx stop,/usr/sbin/service nginx restart
+
+
+- Tạo workflow và khởi chạy
+
+- sudo npm install pm2@latest -g
+
+- pm2 status
+
+- Vào thư mục project
+
+- pm2 start npm --name "github_action" -- run start
+
+- pm2 save
