@@ -9,7 +9,7 @@ function App() {
   }, []);
 
   const getNames = async () => {
-    const response = await axios.get("http://localhost:3000/api/names");
+    const response = await axios.get("/api/names");
     setUsername(response.data);
   };
 
