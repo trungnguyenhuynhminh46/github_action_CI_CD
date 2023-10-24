@@ -41,9 +41,8 @@ jobs:
           npm run build
           npm run dev
           cd ..
-          pm2 start npm --name "github_action" -- run start
-          pm2 save
-          sudo service nginx restart
+          npm run start
+          cd frontend
           npm run test:ui
 
 # - run: |
