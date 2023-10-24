@@ -1,4 +1,4 @@
-name: Deploy Frontend
+name: Deploy Backend
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
           pm2 start npm --name "github_action" -- run start
           pm2 save
           sudo service nginx restart
-  run_vitest:
+  run_test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
