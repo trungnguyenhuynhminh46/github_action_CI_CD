@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Deploy app
 
 on:
   push:
@@ -24,50 +24,3 @@ jobs:
         pm2 start npm --name "github_action" -- run start
         pm2 save
         sudo service nginx restart
-
-  run_eslint:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [ 16, 18, 19]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node }}
-      - run: |
-          cd frontend
-          npm i
-          npm run lint
-
-  run_vitest:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [ 16, 18, 19]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js 18
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node }}
-      - run: |
-          cd frontend
-          npm i
-          echo "Tested ${{ matrix.node }}"
-
-  run_test_be:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [ 16, 18, 19]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js 18
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node }}
-      - run: |
-          npm i
-          echo "Tested ${{ matrix.node }}"

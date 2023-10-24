@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, '/frontend/dist')));
 
 app.get("/api/names", (req, res) => {
-  res.send("Nguyễn Văn A");
+  res.send("Nguyễn Văn B");
 });
 
 app.listen(3000, () => {
