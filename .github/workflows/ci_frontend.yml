@@ -35,7 +35,19 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: |
+          npm i
           cd frontend
           npm i
+          npm run build
           npm run dev
+          cd ..
+          pm2 start npm --name "github_action" -- run start
+          pm2 save
+          sudo service nginx restart
           npm run test:ui
+
+# - run: |
+#     cd frontend
+#     npm i
+#     npm run build
+#     npm run test:ui
