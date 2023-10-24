@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import App from "./App";
+import {test} from "vitest";
 
 it("Should have hello world", ()=>{
     render(<App></App>);
@@ -7,3 +8,6 @@ it("Should have hello world", ()=>{
     expect(message).toBeVisible();
 });
 
+test('adds 1 + 2 to equal 3', () => {
+    expect(3).toBe(3)
+})

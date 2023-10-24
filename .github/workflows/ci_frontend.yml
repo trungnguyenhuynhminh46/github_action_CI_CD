@@ -37,4 +37,4 @@ jobs:
       - run: |
           cd frontend
           npm i
-          npm run test
+          npm run test:ui
