@@ -22,7 +22,6 @@ jobs:
           npm i
           npm run build
           cd ..
-          pm2 kill
           pm2 start npm --name "github_action" -- run start
           pm2 save
           sudo service nginx restart
