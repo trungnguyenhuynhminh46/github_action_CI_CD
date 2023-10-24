@@ -96,3 +96,5 @@ Build FE
 Eslint
 Vitest
 Build
+
+Store artifact
