@@ -35,18 +35,6 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: |
-          npm i
-          cd frontend
-          npm i
-          npm run build
-          npm run dev
-          cd ..
-          npm run start
-          cd frontend
-          npm run test:ui
-
-# - run: |
-#     cd frontend
-#     npm i
-#     npm run build
-#     npm run test:ui
+        cd frontend
+        npm i
+        npm run test:ui
