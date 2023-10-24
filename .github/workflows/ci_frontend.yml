@@ -2,16 +2,16 @@ name: CI Frontend
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   run_eslint:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ 16, 18, 19 ]
+        node: [16, 18, 19]
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node }}
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ 16, 18, 19 ]
+        node: [16, 18, 19]
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js 18
@@ -37,5 +37,5 @@ jobs:
       - run: |
           cd frontend
           npm i
-          npm run build
+          npm run dev
           npm run test:ui
