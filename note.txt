@@ -89,3 +89,10 @@ ALL=(ALL) NOPASSWD: /usr/sbin/service nginx start,/usr/sbin/service nginx stop,/
 - pm2 start npm --name "github_action" -- run start
 
 - pm2 save
+
+
+==================
+Build FE
+Eslint
+Vitest
+Build
