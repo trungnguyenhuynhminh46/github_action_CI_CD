@@ -9,8 +9,14 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    css: "true",
     setupFiles: "./src/test/setup.ts",
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/cypress/**',
+      '**/.{idea,git,cache,output,temp}/**',
+      '../**',
+    ],
   },
   server: {
     proxy: {
