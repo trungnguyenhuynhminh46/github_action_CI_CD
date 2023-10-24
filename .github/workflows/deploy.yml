@@ -23,4 +23,3 @@ jobs:
           npm run build
           cd ..
           npm run start
-          sudo service nginx restart
