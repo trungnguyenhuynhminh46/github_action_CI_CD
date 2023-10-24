@@ -5,7 +5,7 @@
 + Thêm giải thích open source ở cuối (OK)
 + Thêm lint test
 + Thêm unit test
-- Tách workflow (Bắt chước highlight)
+- Tách workflow (OK)
 + Build frontend
 + lint FE
 + test FE với vitest
