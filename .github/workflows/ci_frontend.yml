@@ -35,6 +35,6 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: |
-        cd frontend
-        npm i
-        npm run test:ui
+          cd frontend
+          npm i
+          npm run test:ui
