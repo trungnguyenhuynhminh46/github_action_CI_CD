@@ -98,3 +98,5 @@ Vitest
 Build
 
 Store artifact
+
+https://eternaldev.com/blog/testing-a-react-application-with-vitest

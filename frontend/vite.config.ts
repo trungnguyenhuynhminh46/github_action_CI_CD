@@ -1,9 +1,17 @@
+/// <reference types="vitest" />
+/// <reference types="vite/client" />
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    css: "true",
+    setupFiles: "./src/test/setup.ts",
+  },
   server: {
     proxy: {
       '/api': {
@@ -14,20 +22,3 @@ export default defineConfig({
     }
   }
 });
-
-// export default defineConfig(({ mode: string }) => {
-//   const env = loadEnv(mode, process.cwd(), '');
-//
-//   return {
-//     plugins: [react()],
-//     server: {
-//       proxy: {
-//         '/api': {
-//           target: env.VITE_API_BASE_URL,
-//           changeOrigin: true,
-//           secure: false,
-//         }
-//       }
-//     }
-//   };
-// });

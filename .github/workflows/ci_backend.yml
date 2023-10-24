@@ -20,4 +20,4 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: |
           npm i
-          echo "Tested ${{ matrix.node }}"
+          npm run test
