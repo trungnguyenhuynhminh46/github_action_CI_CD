@@ -100,16 +100,18 @@ Build
 https://eternaldev.com/blog/testing-a-react-application-with-vitest
 ====================
 - Lý thuyết : 26 phút 
--> Demo nói 9 phút là đẹp
+-> Demo: 11 phút
 =======================================
 Setup:
 + Trang dockerhub
 + Trang instance
 + Trang repo
 Flow nói:
++ Nói về project
 + Nói về flow chính trước
 + Cách cấu hình một self-hosted runner
 + Show kết quả flow chính
 + Sửa cho hư
 + Nói về flow issues -> demo
 + Nói về flow docker image -> demo -> show luôn kết quả
+--> Cảm nghĩ
