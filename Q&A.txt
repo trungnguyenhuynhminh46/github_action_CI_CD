@@ -1,0 +1,85 @@
+Q&A Github Action
+https://www.youtube.com/watch?v=5XfgT9A9PHw&list=PLiO7XHcmTsleGRnjT2o0ILzXUkzFJ87eR
+- Khái niệm concurrency trong GA:
+- + Khái niệm concurrency trong Github Actions: concurrency có thể được apply ở mức workflow hoặc mức jobs. Nó đảm bảo sẽ không có job hoặc workflow thuộc một concurrency được chạy đồng thời
+- + Ví dụ:
+- -> Khi push source code lên github, workflow được khởi tạo
+- -> Mặc định biến cancel được set là false,  nghĩa là nếu code khác được push lên GitHub nó sẽ được sét pending
+- -> Lần thứ 3 thì workflow pending sẽ được cancel, và workflow mới tạo sẽ được sét pending.
+- ——————————————————————————————————————————————————————————————————————
+- Cách define output cho job để job khác sử dụng (https://docs.github.com/en/actions/using-jobs/defining-outputs-for-jobs):
+- jobs:
+-   job1:
+-     runs-on: ubuntu-latest
+-     # Map a step output to a job output
+-     outputs:
+-       output1: ${{ steps.step1.outputs.test }}
+-       output2: ${{ steps.step2.outputs.test }}
+-     steps:
+-       - id: step1
+-         run: echo "test=hello" >> "$GITHUB_OUTPUT"
+-       - id: step2
+-         run: echo "test=world" >> "$GITHUB_OUTPUT"
+-   job2:
+-     runs-on: ubuntu-latest
+-     needs: job1
+-     steps:
+-       - env:
+-           OUTPUT1: ${{needs.job1.outputs.output1}}
+-           OUTPUT2: ${{needs.job1.outputs.output2}}
+-         run: echo "$OUTPUT1 $OUTPUT2"
+- -> Một job gồm nhiều steps nên muốn lấy outputs của các steps đó lưu lại chia sẽ cho các job khác phải dùng keywork steps.jobId…
+- -> Muốn lấy ra variables từ một job có thể dùng keyword needs.job_name.var1, needs.jobs_name.var3, …
+- -> echo "test=hello" >> "$GITHUB_OUTPUT" là bước trung gian để truyền giá trị từ steps sang needs
+- ——————————————————————————————————————————————————————————————————————
+- Một job chỉ thực thi Theo một điều kiện cụ thể (https://docs.github.com/en/actions/using-jobs/using-conditions-to-control-job-execution)
+- if: github.repository == 'octo-org/octo-repo-prod'
+- ——————————————————————————————————————————————————————————————————————
+- Schedule Workflow (Sử dụng cron)
+- Chúng ta có thể cấu hình workflow trigger các job sau một khoản thời gian bằng scheduled events
+- on:
+-   schedule:
+-     - cron: '30 5 * * 1,3'
+-     - cron: '30 5 * * 2,4'
+-
+- jobs:
+-   test_schedule:
+-     runs-on: ubuntu-latest
+-     steps:
+-       - name: Not on Monday or Wednesday
+-         if: github.event.schedule != '30 5 * * 1,3'
+-         run: echo "This step will be skipped on Monday and Wednesday"
+-       - name: Every time
+-         run: echo "This step will always run"
+- ——————————————————————————————————————————————————————————————————————
+- Cache dependencies
+- Sẽ có những tình huống nhiều job cùng tải và cài đạt một lặp đi lặp lại một dependency nhất định
+- Cache giải quyết vấn đề này, và nó giúp cải thiện thời gian đáng kể
+- Có nhiều thư viện hỗ trợ cache nên nó không có một syntax cụ thể
+- Các dependencies được cache dược cache được lưu trong Tab Management > Cache
+- ——————————————————————————————————————————————————————————————————————
+- Về store artifact (https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts)
+- + Là phương thức để lưu lại các tài nguyên trong thư mục trong repo để chia sẻ hoặc download (Cục data đó gọi là artifact) + Mặc định cá tài nguyên này được lưu trử 90 ngày, và có thể được config (1->90 với public và 1-> 400 với private)
+- -> Có thể kéo dài hơn 90 ngày không
+- -> Em không thấy đề cập set thấp hơn thì có
+- -> Em nghĩ không cần thiết sét cao hơn vì
+- -> Một workflow chỉ tồn tại 35 ngày, artfact chủ yếu để trao đổi data giữa các workflow 1 cách dễ dàng k phải hình thức lưu trử data
+- -> Nếu muốn lưu trữ lâu hơn có thể dùng các dịch vụ như AWS S3…
+- ——————————————————————————————————————————————————————————————————————
+- Required workflows(https://docs.github.com/en/actions/using-workflows/required-workflows):
+- + Là các workflow được đính kèm ở mức repositoty
+- + Khi có pull request được tạo thì nó luôn được thực thi đầu tiên
+- ——————————————————————————————————————————————————————————————————————
+- Cách tái sử dụng một workflow (https://docs.github.com/en/actions/using-workflows/reusing-workflows)
+- Một workflow có thể được tái sử dụng bằng từ khoá uses, đơn giản các job trong workflow được uses sẽ được thực thi như jobs của workflow gọi nó
+- -> Truyền biến vào một reuseable workflow
+- jobs:
+-   reusable_workflow_job:
+-     runs-on: ubuntu-latest
+-     environment: production
+-     steps:
+-     - uses: actions/labeler@v4
+-       with:
+-         repo-token: ${{ secrets.envPAT }}
+-         configuration-path: ${{ inputs.config-path }}
+- ——————————————————————————————————————————————————————————————————————
